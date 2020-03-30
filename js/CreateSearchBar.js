@@ -1,18 +1,15 @@
 class CreateSearchBar {
 	constructor() {
 		this.domElements = {};
-		this.loadElements();
+		this.companies = [];
+		this.createElements();
+		this.appendElements();
 	}
 
 	createElement = (elementType, classes) => {
 		let element = document.createElement(`${elementType}`);
 		classes.length === 1 ? (element.classList = classes) : element.classList.add(...classes);
 		return element;
-	};
-
-	loadElements = () => {
-		this.createElements();
-		this.appendElements();
 	};
 
 	createElements = () => {
@@ -27,22 +24,23 @@ class CreateSearchBar {
 		this.domElements.innerSpinner = this.createElement('span', ['spinner-grow spinner-grow-sm d-none']);
 
 		this.domElements.companiesList = this.createElement('ul', ['row ulList']);
-
-		//this.domElements.input.addEventListener('onchange', this.print);
 		this.domElements.button.addEventListener('click', this.launchSearch);
 	};
 
-	launchSearch = async event => {
+	launchSearch = async () => {
 		event.preventDefault();
-		console.log(this.domElements.input.value);
 		const url = `https://financialmodelingprep.com/api/v3/search?query=${this.domElements.input.value}&limit=10&exchange=NASDAQ`;
 		this.toggleHidde(this.domElements.innerSpinner);
-		let companies = await this.fetchData(url);
+		this.companies = await this.fetchData(url);
+		this.companies = await this.createCompaniesList(this.companies);
 		this.toggleHidde(this.domElements.innerSpinner);
-		let companiesExtra = await this.createCompaniesList(companies);
-		console.log(companiesExtra);
+		console.log(this.companies);
+		this.returnCompanies();
+	};
 
-		//this.clearElement(document.body);
+	returnCompanies = () => {
+		localStorage.setItem('COMPANIES', JSON.stringify(this.companies));
+		return this.companies;
 	};
 
 	toggleHidde = element => {
@@ -60,13 +58,35 @@ class CreateSearchBar {
 		return await Promise.all(
 			companies.map(async company => {
 				let url1 = `https://financialmodelingprep.com/api/v3/company/profile/${company.symbol}`;
-				company.newData = (await fetch(url1).then(resp => resp.json())).profile;
-				let li = this.createElement('li', ['companies-list col-12']);
-				li.innerHTML = `<a href='./company.html?symbol=${company.symbol}'>${company.name}</a> <span>${company.symbol}</span>`;
-				this.domElements.companiesList.append(li);
+				company.newData = (await this.fetchData(url1)).profile;
+				this.createLliElement(company);
 				return company;
 			})
 		);
+	};
+
+	createLliElement = company => {
+		let li = this.createElement('li', ['companies-list col-12']);
+		li.innerHTML = `<img src=${company.newData.image} alt=${company.name}>
+                        <a href='./company.html?symbol=${company.symbol}'>${company.name}</a>
+                        <span>(${company.symbol})</span>
+                        <span class=${this.getColor(company.newData.changesPercentage)}>
+                        ${company.newData.changesPercentage}</span>`;
+		this.domElements.companiesList.append(li);
+	};
+
+	getColor = string => {
+		let number = isNaN(parseFloat(string)) ? this.convToFloat(string) : parseFloat(string);
+		if (number < 0) {
+			return 'redFont';
+		} else if (number > 0) {
+			return 'greenFont';
+		}
+		return 'blackFont';
+	};
+
+	convToFloat = string => {
+		return parseFloat(string.substr(1)); //slices first character
 	};
 
 	fetchData(url) {
@@ -80,9 +100,4 @@ class CreateSearchBar {
 		this.domElements.rootDiv.append(this.domElements.row01, this.domElements.form, this.domElements.companiesList);
 		document.body.prepend(this.domElements.rootDiv);
 	};
-
-	print() {
-		console.log('hola');
-		//console.log(this.domElements);
-	}
 }

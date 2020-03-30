@@ -27,22 +27,24 @@
 }
 
 .companies-list {
-    border: 2px solid yellow;
+    /*border: 2px solid yellow;*/
     margin: 0;
+    padding: 10px 0
 }
 
-/*
-.caca {
-    border: 2px solid black;
-    height: 100px;
+.companies-list img {
+    height: 30px;
+    width: auto;
 }
 
-.caca2 {
-    border: 2px solid green;
-    height: 40px
+.greenFont {
+    color: green
 }
 
-.caca .row {
-    border: 2px solid blue;
-    height: 50px;
-}*/
+.redFont {
+    color: red
+}
+
+.blackFont {
+    color: black;
+}

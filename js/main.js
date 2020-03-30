@@ -1,6 +1,5 @@
 window.onload = (() => {
-	new CreateSearchBar();
-	(() => {
-		//some code
-	})();
+	//const app = new CreateSearchBar();
+	//console.log(app.returnCompanies());
 })();
+const app = new CreateSearchBar();
