@@ -3,18 +3,30 @@
 }
 
 .root {
-    border: 1px solid red;
+    /*border: 1px solid red;*/
 }
 
 .row {
-    border: 1px solid blue;
+    /*border: 1px solid blue;*/
 }
 
 .form-group {
-    border: 2px solid green;
+    /*border: 2px solid green;*/
 }
 
 .spacer {
-    border: 3px solid coral;
+    /*border: 3px solid coral;*/
     height: 70px;
+}
+
+.ulList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.companies-list {
+    border: 2px solid yellow;
+    margin: 0;
 }

@@ -1,5 +1,5 @@
 class CreateSearchBar {
-	constructor(parent) {
+	constructor() {
 		this.domElements = {};
 		this.loadElements();
 	}
@@ -14,6 +14,7 @@ class CreateSearchBar {
 		this.createElements();
 		this.appendElements();
 	};
+
 	createElements = () => {
 		this.domElements.rootDiv = this.createElement('div', ['root', 'container-fluid', 'justify-content-around']);
 		this.domElements.row01 = this.createElement('div', ['spacer', 'row']);
@@ -23,17 +24,51 @@ class CreateSearchBar {
 		this.domElements.input.id = 'searchStock';
 		this.domElements.button = this.createElement('button', ['btn btn-primary']);
 		this.domElements.button.innerText = 'Search Stock';
-		console.log(this.domElements);
+		this.domElements.companiesList = this.createElement('ul', ['row ulList']);
+
+		//this.domElements.input.addEventListener('onchange', this.print);
+		this.domElements.button.addEventListener('click', this.launchSearch);
 	};
+
+	launchSearch = async event => {
+		event.preventDefault();
+		console.log(this.domElements.input.value);
+		const url = `https://financialmodelingprep.com/api/v3/search?query=${this.domElements.input.value}&limit=10&exchange=NASDAQ`;
+		let companies = await this.fetchData(url);
+		this.createCompaniesList(companies);
+		//this.clearElement(document.body);
+	};
+
+	clearDom = element => {
+		while (element.firstChild) {
+			element.firstChild.remove();
+		}
+	};
+
+	createCompaniesList = companies => {
+		this.clearDom(this.domElements.companiesList);
+		companies.forEach(company => {
+			let li = this.createElement('li', ['companies-list col-12']);
+			li.innerText = `<a href='www.google.com'>${company.name}</a> <span>${company.symbol}</span>`;
+			this.domElements.companiesList.append(li);
+		});
+		console.log(ulList);
+		this.domElements.companiesList = ulList;
+	};
+
+	async fetchData(url) {
+		return await fetch(url).then(response => response.json());
+	}
 
 	appendElements = () => {
 		this.domElements.innerDiv.append(this.domElements.input, this.domElements.button);
 		this.domElements.form.append(this.domElements.innerDiv);
-		this.domElements.rootDiv.append(this.domElements.row01, this.domElements.form);
+		this.domElements.rootDiv.append(this.domElements.row01, this.domElements.form, this.domElements.companiesList);
 		document.body.prepend(this.domElements.rootDiv);
 	};
 
 	print() {
 		console.log('hola');
+		//console.log(this.domElements);
 	}
 }
