@@ -72,6 +72,11 @@ class CreateSearchBar {
 		return positions;
 	};
 
+	returnColorFunction = boolean => {
+		if (boolean) return 'red';
+		else return 'blue';
+	};
+
 	createCompaniesList = async companies => {
 		this.clearElement(this.domElements.companiesList);
 		return await Promise.all(
