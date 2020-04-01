@@ -13,6 +13,7 @@ class CreateSearchBar {
 	};
 
 	createElements = () => {
+		this.checkSubstring('aa', 'apple Inc aa Corpo aa');
 		this.domElements.rootDiv = this.createElement('div', ['root', 'container-fluid', 'justify-content-around']);
 		this.domElements.row01 = this.createElement('div', ['spacer', 'row']);
 		this.domElements.form = this.createElement('form', ['row d-flex justify-content-around align-items-center']);
@@ -22,7 +23,6 @@ class CreateSearchBar {
 		this.domElements.button = this.createElement('button', ['btn btn-primary']);
 		this.domElements.button.innerHTML = '<span>Search Stock</span>';
 		this.domElements.innerSpinner = this.createElement('span', ['spinner-grow spinner-grow-sm d-none']);
-
 		this.domElements.companiesList = this.createElement('ul', ['row ulList']);
 		this.domElements.button.addEventListener('click', this.launchSearch);
 	};
@@ -51,6 +51,25 @@ class CreateSearchBar {
 		while (element.firstChild) {
 			element.firstChild.remove();
 		}
+	};
+
+	checkSubstring = (input, phrase) => {
+		let positions = [];
+		for (let i = 0; i < phrase.length; i++) {
+			let index = phrase.toLowerCase().indexOf(input.toLowerCase(), i);
+			if (index !== -1) {
+				let tupple = {};
+				tupple.start = index;
+				tupple.end = index + input.length - 1;
+				positions.push(tupple);
+				i = i + tupple.end;
+			}
+		}
+
+		let search = phrase.toLowerCase().search(input.toLowerCase());
+		let length = input.length;
+		console.log(input, phrase, search, length, positions);
+		return positions;
 	};
 
 	createCompaniesList = async companies => {
