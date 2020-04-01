@@ -29,7 +29,7 @@ class CompanyCard {
 			const card = `
             <div class="root container-fluid">
             <div class="row justify-content-center mt-5">
-            <div class="card col-9" style="width: 18rem;">
+            <div class="card col-6" style="width: 18rem;">
             <img src="${company.newData.image}" class="card-img-top" alt="${company.symbol}">
             <div class="card-body">
             <h3>${company.name}</h3>
@@ -73,26 +73,26 @@ class CompanyCard {
 	};
 
 	drawChart = object => {
-		var newChart = new Chart(document.getElementById('myChart').getContext('2d')),
-			{
-				type: 'line',
-				data: {
-					labels: object.labels,
-					datasets: [
-						{
-							label: 'My Second dataset',
-							fillColor: 'rgba(151,187,205,0.2)',
-							strokeColor: 'rgba(151,187,205,1)',
-							pointColor: 'rgba(151,187,205,1)',
-							pointStrokeColor: '#fff',
-							pointHighlightFill: '#fff',
-							pointHighlightStroke: 'rgba(151,187,205,1)',
-							data: object.values
-						}
-					]
-				},
-				options: {}
-			};
+		//    var newChart = new Chart(document.getElementById('myChart').getContext('2d')),
+		//        {
+		//            type: 'line'
+		//			data: {
+		//				labels: object.labels,
+		//				datasets: [
+		//					{
+		//						label: 'My Second dataset',
+		//						fillColor: 'rgba(151,187,205,0.2)',
+		//						strokeColor: 'rgba(151,187,205,1)',
+		//						pointColor: 'rgba(151,187,205,1)',
+		//						pointStrokeColor: '#fff',
+		//						pointHighlightFill: '#fff',
+		//						pointHighlightStroke: 'rgba(151,187,205,1)',
+		//						data: object.values
+		//					}
+		//				]
+		//			},
+		//			options: {}
+		//		};
 	};
 	filterCompanies = () => {};
 }

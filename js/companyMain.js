@@ -1,4 +1,5 @@
-window.onload = (() => {
-	new CompanyCard();
-	(() => {})();
-})();
+//window.onload = (() => {
+//    (() => {})();
+//})();
+
+new CompanyCard(UTILS);
