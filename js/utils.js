@@ -40,5 +40,11 @@ const UTILS = {
 
 	getCompaniesfromLocalStorage: name => {
 		return JSON.parse(localStorage.getItem(name));
-	}
+    }
+    
+    returnColorFunction : boolean => {
+		if (boolean) return 'red';
+		else return 'blue';
+	};
+
 };
