@@ -54,3 +54,12 @@
     height: 300px;
     width: 100%;
 }
+
+.logo {
+    background-image: url("../images/itc.png");
+    background-position: center;
+    background-size: cover;
+    width: 80px;
+    height: 80px;
+    border-radius: 100px;
+}
