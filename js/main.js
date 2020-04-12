@@ -1,3 +1,5 @@
 window.onload = (() => {
-	new CreateSearchBar();
+	const utils = new UtilsClass();
+	new CreateForm(utils);
+	new CreateResults(utils);
 })();
