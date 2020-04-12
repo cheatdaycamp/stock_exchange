@@ -4,19 +4,17 @@ class CreateResults {
 		this.domUL = domUL;
 		this.matchString = '';
 	}
-	checkMatch = (company) => {
-		// regenarate regex of the expression that we are gooing to look
-		// if found, replace it.
-		let stringName = company.name;
-		let stringSymbol = company.symbol;
+	checkMatch = (stringValue) => {
 		const pattern = new RegExp(this.matchString, `i`);
-		let name = stringName.replace(pattern, `<span class='highlight'>$&</span>`);
-		let symbol = stringSymbol.replace(pattern, `<span class='highlight'>$&</span>`);
-		return { name: name, symbol: symbol };
+		let replacedString = stringValue.toString().replace(pattern, `<span class='highlight'>$&</span>`);
+		return replacedString;
 	};
 
 	createLiElement = (company) => {
-		let highlight = this.checkMatch(company);
+		console.log(company);
+		let highlight = {};
+		highlight.name = this.checkMatch(company.name);
+		highlight.symbol = this.checkMatch(company.symbol);
 		let companyItem = this.utils.createElement('li', ['companies-list col-12']);
 		let compareButton = new CompareButton(this.utils.createElement, company).button;
 		let itemRow = this.utils.createElement('div', ['row d-flex justify-content-between']);

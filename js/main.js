@@ -1,23 +1,4 @@
 window.onload = (() => {
-	printHI();
-
-	function printHI() {
-		console.log('hi');
-	}
-
-	new PrintHi();
-
-	class PrintHi {
-		constructor() {
-			this.printHI();
-		}
-		printHI = () => {
-			console.log('hi - CLASS');
-		};
-	}
-
-	printHI();
-
 	const utils = new UtilsClass();
 	const form = new CreateForm(utils);
 
@@ -36,18 +17,3 @@ window.onload = (() => {
 		form.launchSearch(callbackFunction);
 	});
 })();
-
-/*
-            form
-            resultlist => {}method1, method2, method3.
-
-
-
-
-
-
-
-
-
-
-*/
