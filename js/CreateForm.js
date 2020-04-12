@@ -1,8 +1,8 @@
 class CreateForm {
 	constructor(utils) {
 		this.utils = utils;
-		this.domElements = {};
-		this.companies = [];
+		this.domElements = {}; // store the dom elements
+		this.companies = []; // store fetched data mapped
 		this.createElements();
 		this.setAttributes();
 		this.appendElements();
@@ -15,6 +15,7 @@ class CreateForm {
 		this.domElements.row01 = createElement('div', [
 			'row justify-content-end p-3 d-flex align-items-center shadow mb-5',
 		]);
+		this.domElements.marquee = createElement('div', ['row marquee']);
 		this.domElements.form = createElement('div', ['input-group mb-3']);
 		this.domElements.logo = createElement('div', ['logo']);
 		this.domElements.input = createElement('input', ['form-control']);
@@ -25,9 +26,14 @@ class CreateForm {
 	};
 
 	setAttributes = () => {
-		const { input, button, spinner } = this.domElements;
+		const { input, button, spinner, marquee } = this.domElements;
 		button.textContent = 'Search Stock';
 		input.id = 'searchStock';
+		marquee.innerHTML = `<div class='col-12'>
+						<div class='marquee-wrapper'>
+							<div id='marquee' class='text-nowrap'></div>
+						</div>
+					</div>`;
 		input.setAttribute('type', 'text');
 		spinner.innerHTML = `<div id='spinner' class="spinner-border text-black d-none" role="status">
         <span class="sr-only">Loading...</span>
@@ -35,11 +41,11 @@ class CreateForm {
 	};
 
 	appendElements = () => {
-		const { input, button, spinner, innerDiv, row01, form, companiesList, rootDiv, logo } = this.domElements;
+		const { input, button, spinner, innerDiv, row01, form, companiesList, rootDiv, logo, marquee } = this.domElements;
 		row01.append(logo);
 		innerDiv.append(button);
 		form.append(input, innerDiv);
-		rootDiv.append(row01, form, spinner, companiesList);
+		rootDiv.append(marquee, row01, form, spinner, companiesList);
 		document.body.prepend(rootDiv);
 	};
 
@@ -55,11 +61,11 @@ class CreateForm {
 		toggleHidde(spinner.firstChild);
 		this.companies = await fetchData(url);
 		this.companies = await this.createCompaniesList(this.companies);
-		toggleHidde(spinner);
-		this.returnCompanies();
+		toggleHidde(spinner.firstChild);
+		this.storeCompanies();
 	};
 
-	returnCompanies = () => {
+	storeCompanies = () => {
 		localStorage.setItem('COMPANIES', JSON.stringify(this.companies));
 		return this.companies;
 	};

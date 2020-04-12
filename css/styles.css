@@ -32,3 +32,29 @@
     height: 80px;
     border-radius: 100px;
 }
+
+.highlight {
+    background-color: yellow;
+}
+
+.marquee-wrapper {
+    width: min-content;
+}
+
+#marquee {
+    animation: marquee 800s linear infinite;
+    position: relative;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+@keyframes marquee {
+    0% {
+        left: 0;
+    }
+    100% {
+        left: -100%
+    }
+}
