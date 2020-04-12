@@ -19,12 +19,9 @@ body {
 }
 
 .chart-wrapper {
-    border: 1px solid red;
-    min-height: 300px;
     width: 100%;
     display: flex;
     flex-direction: column;
-    flex: 1;
 }
 
 .logo {

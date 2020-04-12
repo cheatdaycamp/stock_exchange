@@ -13,15 +13,15 @@ class CompanyCard {
 		this.getSymbols();
 		this.getCompaniesfromLocalStorage();
 		this.filterCompanies();
+		this.appendRootToBody();
 		this.filteredCompanies.forEach((company) => {
-			console.log('HOLA');
 			this.createCard(company);
 		});
-		this.appendRootToBody();
 	};
 
 	createRootElement = () => {
 		let root = this.utils.createElement('div', ['h-100 container-fluid flex-grow-1 d-flex h-100 flex-column']);
+		root.id = 'cards-root';
 		root.innerHTML = `<div class="row d-flex h-100 flex-grow-1 justify-content-around my-4 "></div>`;
 		this.root = root;
 	};
@@ -57,8 +57,8 @@ class CompanyCard {
 		});
 	};
 
-	createCard = (company) => {
-		console.log('here', company);
+	createCard = async (company) => {
+		//const values = await this.getChart(company);
 		const card = `
                 <div class="card col-12 col-md-8 col-lg-5 p-3 d-flex flex-column">
                     <div class = 'container-fluid d-flex flex-column flex-grow-1 h-100'>
@@ -79,58 +79,59 @@ class CompanyCard {
                             </span>
                             <p class="">${company.profile.description}</p>
                         </div>
-                        <div id="myChart-${company.symbol}" class="chart-wrapper"></div>
-
+                        <canvas id="myChart-${company.symbol}" class="chart-wrapper"></canvas>
                     </div>
                 </div>
             `;
-		//const values = await this.getChart(company);
-		//this.drawChart(card.getElementById('myChart'));
-		this.root.firstChild.insertAdjacentHTML('beforeend', card);
+		document.getElementById(`cards-root`).firstChild.insertAdjacentHTML('beforeend', card);
+		let companyHistorical = await this.getDataChart(company);
+		let dataForChart = this.filterChartData(companyHistorical);
+		let a = document.getElementById(`myChart-${company.symbol}`);
+		console.log(companyHistorical);
+		console.log(dataForChart);
+		console.log(a);
+		this.drawChart(dataForChart, a);
 	};
 	appendRootToBody = () => {
 		document.body.prepend(this.root);
 	};
-	getChart = async (company) => {
+
+	getDataChart = async (company) => {
 		let url = `https://financialmodelingprep.com/api/v3/historical-price-full/${company.symbol}?serietype=line`;
 		let stockPrices = await this.utils.fetchData(url);
-		console.log(stockPrices);
+		return stockPrices;
+	};
+
+	filterChartData = (stockPrices) => {
 		let jump = parseInt(stockPrices.historical.length / 40);
-		console.log(stockPrices.historical.length, jump);
 		let amountData = stockPrices.historical.length - 20;
 		let limitData = stockPrices.historical.length;
 		let slicedData = stockPrices.historical.slice(amountData, limitData);
 		let labels = [];
 		let values = [];
-		console.log(slicedData);
 		for (let price of slicedData) {
 			labels.push(price.date);
-			values.push(price.price);
+			values.push(price.close);
 		}
-		console.log(values.length, labels.length);
 		return { labels: labels, values: values };
 	};
 
-	drawChart = (object) => {
-		//    var newChart = new Chart(document.getElementById('myChart').getContext('2d')),
-		//        {
-		//            type: 'line'
-		//			data: {
-		//				labels: object.labels,
-		//				datasets: [
-		//					{
-		//						label: 'My Second dataset',
-		//						fillColor: 'rgba(151,187,205,0.2)',
-		//						strokeColor: 'rgba(151,187,205,1)',
-		//						pointColor: 'rgba(151,187,205,1)',
-		//						pointStrokeColor: '#fff',
-		//						pointHighlightFill: '#fff',
-		//						pointHighlightStroke: 'rgba(151,187,205,1)',
-		//						data: object.values
-		//					}
-		//				]
-		//			},
-		//			options: {}
-		//		};
+	drawChart = (filteredChartData, ctx) => {
+		let chart = new Chart(ctx, {
+			type: `line`,
+			data: {
+				labels: filteredChartData.labels,
+				datasets: [
+					{
+						label: `Stock Price History`,
+						backgroundColor: `rgb(255, 99, 132)`,
+						borderColor: `rgb(255, 99, 132)`,
+						data: filteredChartData.values,
+					},
+				],
+			},
+			options: {},
+		});
+		return chart;
 	};
 }
