@@ -20,39 +20,48 @@ class CompanyCard {
 		if (!this.companies) {
 			this.filteredCompanies = await this.utils.fetchData(url);
 		} else {
-			this.filteredCompanies = this.companies.filter(company => company.symbol === param);
+			this.filteredCompanies = this.companies.filter((company) => company.symbol === param);
 		}
 	};
 
-	createCard = company => {
-		company.forEach(async company => {
+	createCard = (company) => {
+		let root = this.utils.createElement('div', ['h-100 container-fluid flex-grow-1 d-flex h-100 flex-column']);
+		root.innerHTML = `<div class="row d-flex h-100 flex-grow-1 justify-content-center my-4 "></div>`;
+		console.log(root.firstChild);
+		company.forEach(async (company, index) => {
 			const card = `
-            <div class="root container-fluid">
-            <div class="row justify-content-center mt-5">
-            <div class="card col-6" style="width: 18rem;">
-            <img src="${company.newData.image}" class="card-img-top" alt="${company.symbol}">
-            <div class="card-body">
-            <h3>${company.name}</h3>
-            <h4>${company.symbol}</h4>
-            <h5>Stock Price: $${company.newData.price}
-            <span class=${this.utils.getColor(company.newData.changesPercentage)}>
-            ${company.newData.changesPercentage}
-            </span>
-            </h5>
-            <p class="card-text">${company.newData.description}</p>
-            </div>
-            </div>
-            </div>
-            <div id="myChart" class="row justify-content-center mt-5"></div>
-            </div>
+                    <div class="card col-12 col-md-8 col-lg-5 p-3 d-flex flex-column">
+                        <div class = 'container-fluid d-flex flex-column flex-grow-1 h-100'>
+                            <div class = 'row d-flex flex-grow-1 justify-content-start align-items-center'>
+                                <img src="${company.newData.image}" class="company-logo card-img-top" alt="${
+				company.symbol
+			}">
+                                <div class="d-flex flex-column ml-2">
+                                    <h2>${company.name}</h2>
+                                    <h3>${company.symbol}</h3>
+                                </div>
+                            </div>
+                            <div class = 'row mt-3'>
+                                <h5>Stock Price: $${company.newData.price}</h5>
+                                <span class=${this.utils.getColor(company.newData.changesPercentage)}> ${
+				company.newData.changesPercentage
+			}
+                                </span>
+                                <p class="">${company.newData.description}</p>
+                            </div>
+                            <div id="myChart-${company.symbol}" class="chart-wrapper"></div>
+
+                        </div>
+                    </div>
+
              `;
-			document.body.innerHTML += card;
-			const values = await this.getChart(company);
-			console.log('viva', values);
-			this.drawChart(values);
+			//const values = await this.getChart(company);
+			//this.drawChart(card.getElementById('myChart'));
+			root.firstChild.insertAdjacentHTML('beforeend', card);
 		});
+		document.body.prepend(root);
 	};
-	getChart = async company => {
+	getChart = async (company) => {
 		let url = `https://financialmodelingprep.com/api/v3/historical-price-full/${company.symbol}?serietype=line`;
 		let stockPrices = await this.utils.fetchData(url);
 		console.log(stockPrices);
@@ -72,7 +81,7 @@ class CompanyCard {
 		return { labels: labels, values: values };
 	};
 
-	drawChart = object => {
+	drawChart = (object) => {
 		//    var newChart = new Chart(document.getElementById('myChart').getContext('2d')),
 		//        {
 		//            type: 'line'

@@ -1,5 +1,5 @@
-const UTILS = {
-	getColor: function(string) {
+const utils = {
+	getColor: function (string) {
 		let number = isNaN(parseFloat(string)) ? this.convToFloat(string) : parseFloat(string);
 		if (number < 0) {
 			return 'redFont';
@@ -9,12 +9,12 @@ const UTILS = {
 		return 'blackFont';
 	},
 
-	convToFloat: string => {
+	convToFloat: (string) => {
 		return parseFloat(string.substr(1)); //slices first character
 	},
 
-	fetchData: url => {
-		return fetch(url).then(response => response.json());
+	fetchData: (url) => {
+		return fetch(url).then((response) => response.json());
 	},
 
 	returnCompanies: () => {
@@ -22,11 +22,11 @@ const UTILS = {
 		return this.companies;
 	},
 
-	toggleHidde: element => {
+	toggleHidde: (element) => {
 		element.classList.toggle('d-none');
 	},
 
-	clearElement: element => {
+	clearElement: (element) => {
 		while (element.firstChild) {
 			element.firstChild.remove();
 		}
@@ -38,13 +38,17 @@ const UTILS = {
 		return urlParams.get(...param);
 	},
 
-	getCompaniesfromLocalStorage: name => {
+	getCompaniesfromLocalStorage: (name) => {
 		return JSON.parse(localStorage.getItem(name));
-    }
-    
-    returnColorFunction : boolean => {
-		if (boolean) return 'red';
-		else return 'blue';
-	};
+	},
 
+	checkColor: (boolean) => {
+		return boolean ? 'red' : 'blue';
+	},
+
+	createElement: (elementType, classes) => {
+		const element = document.createElement(`${elementType}`);
+		classes.length === 1 ? (element.classList = classes) : element.classList.add(...classes);
+		return element;
+	},
 };

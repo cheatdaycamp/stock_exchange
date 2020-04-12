@@ -40,8 +40,6 @@ class CreateSearchBar {
 
 	appendElements = () => {
 		const { input, button, spinner, innerDiv, row01, form, companiesList, rootDiv, logo } = this.domElements;
-		//this.domElements.button.prepend(this.domElements.spinner);
-
 		row01.append(logo);
 		innerDiv.append(button);
 		form.append(input, innerDiv);
@@ -57,7 +55,6 @@ class CreateSearchBar {
 		this.companies = await this.fetchData(url);
 		this.companies = await this.createCompaniesList(this.companies);
 		this.toggleHidde(spinner);
-		console.log(this.companies.firstChild);
 		this.returnCompanies();
 	};
 
@@ -126,8 +123,6 @@ class CreateSearchBar {
 				}
 			}
 		}
-		console.log(spanString);
-		let caca = `<span></span>`;
 		item.replace();
 	};
 
@@ -145,11 +140,14 @@ class CreateSearchBar {
 
 	createLliElement = (company) => {
 		let li = this.createElement('li', ['companies-list col-12']);
-		li.innerHTML = `<img src=${company.newData.image} alt=${company.name}>
-                        <a href='./company.html?symbol=${company.symbol}'>${company.name}</a>
-                        <span>(${company.symbol})</span>
-                        <span class=${this.getColor(company.newData.changesPercentage)}>
-                        ${company.newData.changesPercentage}</span>`;
+		li.innerHTML = `<div class= 'row d-flex'>
+                            <img src=${company.newData.image} alt=${company.name}>
+                            <a href='./company.html?symbol=${company.symbol}'>${company.name}</a>
+                            <span>(${company.symbol})</span> <span class=${this.getColor(
+			company.newData.changesPercentage
+		)}>${company.newData.changesPercentage}</span>
+                        </div>
+                        `;
 		this.domElements.companiesList.append(li);
 	};
 

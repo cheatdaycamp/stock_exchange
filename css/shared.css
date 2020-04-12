@@ -1,0 +1,33 @@
+a, span, tr {
+    white-space: pre;
+}
+
+.border-1 {
+    border: 3px solid coral!important
+}
+
+.border-2 {
+    border: 3px solid lightblue!important
+}
+
+.border-3 {
+    border: 3px solid lightgreen!important
+}
+
+.border-4 {
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 10px!important;
+}
+
+.greenFont {
+    color: green
+}
+
+.redFont {
+    color: red
+}
+
+.blackFont {
+    color: black;
+}

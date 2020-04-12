@@ -1,5 +1,3 @@
-//window.onload = (() => {
-//    (() => {})();
-//})();
-
-new CompanyCard(UTILS);
+window.onload = (() => {
+	new CompanyCard(utils);
+})();
