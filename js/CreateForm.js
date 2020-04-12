@@ -19,7 +19,7 @@ class CreateForm {
 		this.domElements.input = createElement('input', ['form-control']);
 		this.domElements.innerDiv = createElement('div', ['input-group-append']);
 		this.domElements.button = createElement('button', ['btn btn-primary']);
-		this.domElements.spinner = createElement('div', ['row justify-content-center']);
+		this.domElements.spinner = createElement('div', ['row justify-content-center d-none']);
 		this.domElements.companiesList = createElement('ul', ['row ulList']);
 	};
 
@@ -33,7 +33,7 @@ class CreateForm {
 						</div>
 					</div>`;
 		input.setAttribute('type', 'text');
-		spinner.innerHTML = `<div id='spinner' class="spinner-border text-black d-none" role="status">
+		spinner.innerHTML = `<div id='spinner' class="spinner-border text-black" role="status">
         <span class="sr-only">Loading...</span>
         </div>`;
 	};
@@ -56,10 +56,11 @@ class CreateForm {
 		const { toggleHidde, fetchData } = this.utils;
 		event.preventDefault();
 		const url = `https://financialmodelingprep.com/api/v3/search?query=${input.value}&limit=10&exchange=NASDAQ`;
-		toggleHidde(spinner.firstChild);
+		toggleHidde(spinner);
 		this.companies = await fetchData(url);
-		this.companies = await this.createCompaniesList(this.companies, callbackFunction);
-		toggleHidde(spinner.firstChild);
+		this.companies = await this.createCompaniesList(this.companies);
+		callbackFunction(this.companies);
+		toggleHidde(spinner);
 		this.storeCompanies();
 	};
 
@@ -68,14 +69,13 @@ class CreateForm {
 		return this.companies;
 	};
 
-	createCompaniesList = async (companies, callbackFunction) => {
+	createCompaniesList = async (companies) => {
 		const { clearElement, fetchData } = this.utils;
 		clearElement(this.domElements.companiesList);
 		return await Promise.all(
 			companies.map(async (company) => {
 				let url1 = `https://financialmodelingprep.com/api/v3/company/profile/${company.symbol}`;
-				company.newData = (await fetchData(url1)).profile;
-				callbackFunction(companies);
+				company.profile = (await fetchData(url1)).profile;
 				return company;
 			})
 		);

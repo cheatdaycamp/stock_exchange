@@ -32,19 +32,23 @@ class CompanyCard {
 	};
 
 	getCompaniesfromLocalStorage = () => {
-		this.companies = this.utils.getCompaniesfromLocalStorage('COMPANIES');
+		let tryGrabFromStorage = this.utils.getCompaniesfromLocalStorage('COMPANIES');
+		if (tryGrabFromStorage) {
+			this.companies = tryGrabFromStorage;
+		}
 	};
 
 	filterCompanies = () => {
 		this.symbols.forEach(async (param) => {
 			let url = `https://financialmodelingprep.com/api/v3/company/profile/${param}`;
-			try {
-				let filterCompany = this.companies.find((company) => company.symbol === param);
-				if (filterCompany.symbol) {
-					this.filteredCompanies.push(filterCompany);
-					this.createCard(filterCompany);
-				}
-			} catch {
+			let filterCompany;
+			if (this.companies) {
+				filterCompany = this.companies.find((company) => company.symbol === param);
+			}
+			if (filterCompany && filterCompany.symbol) {
+				this.filteredCompanies.push(filterCompany);
+				this.createCard(filterCompany);
+			} else {
 				console.warn(`Company with symbol: ${param} doesn't exist in COMPANIES local storage. Fetching from API.`);
 				let filterCompany = await this.utils.fetchData(url);
 				this.filteredCompanies.push(filterCompany);
