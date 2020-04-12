@@ -6,16 +6,14 @@ class CreateForm {
 		this.createElements();
 		this.setAttributes();
 		this.appendElements();
-		this.setEventsListeners();
+		//this.setEventsListeners();
 	}
 
 	createElements = () => {
 		const { createElement } = this.utils;
 		this.domElements.rootDiv = createElement('div', ['root', 'container-fluid']);
-		this.domElements.row01 = createElement('div', [
-			'row justify-content-end p-3 d-flex align-items-center shadow mb-5',
-		]);
-		this.domElements.marquee = createElement('div', ['row marquee']);
+		this.domElements.row01 = createElement('div', ['row justify-content-center p-3 d-flex align-items-center mb-5']);
+		this.domElements.marquee = createElement('div', ['row marquee shadow']);
 		this.domElements.form = createElement('div', ['input-group mb-3']);
 		this.domElements.logo = createElement('div', ['logo']);
 		this.domElements.input = createElement('input', ['form-control']);
@@ -50,17 +48,17 @@ class CreateForm {
 	};
 
 	setEventsListeners = () => {
-		this.domElements.button.addEventListener('click', this.launchSearch);
+		this.domElements.button.addEventListener('click', this.launchSearch(callbackFunction));
 	};
 
-	launchSearch = async () => {
+	launchSearch = async (callbackFunction) => {
 		const { spinner, input } = this.domElements;
 		const { toggleHidde, fetchData } = this.utils;
 		event.preventDefault();
 		const url = `https://financialmodelingprep.com/api/v3/search?query=${input.value}&limit=10&exchange=NASDAQ`;
 		toggleHidde(spinner.firstChild);
 		this.companies = await fetchData(url);
-		this.companies = await this.createCompaniesList(this.companies);
+		this.companies = await this.createCompaniesList(this.companies, callbackFunction);
 		toggleHidde(spinner.firstChild);
 		this.storeCompanies();
 	};
@@ -70,15 +68,14 @@ class CreateForm {
 		return this.companies;
 	};
 
-	createCompaniesList = async (companies) => {
+	createCompaniesList = async (companies, callbackFunction) => {
 		const { clearElement, fetchData } = this.utils;
 		clearElement(this.domElements.companiesList);
 		return await Promise.all(
 			companies.map(async (company) => {
 				let url1 = `https://financialmodelingprep.com/api/v3/company/profile/${company.symbol}`;
 				company.newData = (await fetchData(url1)).profile;
-				this.createLliElement(company);
-				//callback
+				callbackFunction(companies);
 				return company;
 			})
 		);

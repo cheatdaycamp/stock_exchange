@@ -1,13 +1,12 @@
 class CreateResults {
-	constructor(utils, domUL, companies) {
+	constructor(utils, domUL) {
 		this.utils = utils;
 		this.domUL = domUL;
-		this.companies = companies;
 	}
 
-	createLliElement = (company) => {
+	createLiElement = (company) => {
 		let companyItem = this.utils.createElement('li', ['companies-list col-12']);
-		li.innerHTML = `<div class= 'row d-flex'>
+		companyItem.innerHTML = `<div class= 'row d-flex'>
                             <img src=${company.newData.image} alt=${company.name}>
                             <a href='./company.html?symbol=${company.symbol}'>${company.name}</a>
                             <span>(${company.symbol})</span> <span class=${this.utils.getColor(
@@ -18,9 +17,9 @@ class CreateResults {
 		return companyItem;
 	};
 
-	createCompaniesList() {
-		this.companies.forEach((element) => {
-			const item = this.createLliElement(element);
+	createCompaniesList(companies) {
+		companies.forEach((element) => {
+			const item = this.createLiElement(element);
 			this.domUL.append(item);
 		});
 	}
