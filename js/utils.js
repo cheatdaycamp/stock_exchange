@@ -33,7 +33,6 @@ const utils = {
 	},
 
 	getUrlParams: (...param) => {
-		console.log('here');
 		const urlParams = new URLSearchParams(window.location.search);
 		return urlParams.get(...param);
 	},

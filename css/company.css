@@ -40,3 +40,7 @@ body {
     height: auto;
     width: 120px;
 }
+
+.min-120px {
+    min-height: 120px;
+}
