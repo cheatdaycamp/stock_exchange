@@ -51,7 +51,7 @@ class CreateForm {
 		this.domElements.button.addEventListener('click', this.launchSearch(callbackFunction));
 	};
 
-	launchSearch = async (callbackFunction) => {
+	launchSearch = async (callbackFunction, liFunction) => {
 		const { spinner, input } = this.domElements;
 		const { toggleHidde, fetchData } = this.utils;
 		event.preventDefault();
@@ -59,9 +59,10 @@ class CreateForm {
 		toggleHidde(spinner);
 		this.companies = await fetchData(url);
 		this.companies = await this.createCompaniesList(this.companies);
-		callbackFunction(this.companies);
+		console.log('1', this.companies);
+		callbackFunction(this.companies, input.value, liFunction);
 		toggleHidde(spinner);
-		this.storeCompanies();
+		//this.storeCompanies();
 	};
 
 	storeCompanies = () => {

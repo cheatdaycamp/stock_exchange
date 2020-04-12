@@ -3,7 +3,6 @@ class Marquee {
 		this.utils = utils;
 		this.parent = parent;
 		this.prices; // storing the fetch
-		console.log(this.parent);
 		this.launchMarquee();
 	}
 
