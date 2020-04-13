@@ -11,7 +11,6 @@ class CreateResults {
 	};
 
 	createLiElement = (company) => {
-		console.log(company);
 		let highlight = {};
 		highlight.name = this.checkMatch(company.name);
 		highlight.symbol = this.checkMatch(company.symbol);
@@ -33,10 +32,8 @@ class CreateResults {
 	};
 
 	createCompaniesList(companies, inputValue) {
-		console.log(inputValue);
 		this.matchString = inputValue;
 		companies.forEach((element) => {
-			this.checkMatch(element);
 			const item = this.createLiElement(element);
 			this.domUL.append(item);
 		});

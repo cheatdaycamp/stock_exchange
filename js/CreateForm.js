@@ -48,13 +48,15 @@ class CreateForm {
 	};
 
 	setEventsListeners = () => {
-		this.domElements.button.addEventListener('click', this.launchSearch(callbackFunction));
+		const { button } = this.domElements;
+		button.addEventListener('click', this.launchSearch(callbackFunction));
 	};
 
 	launchSearch = async (callbackFunction) => {
 		const { spinner, input } = this.domElements;
 		const { toggleHidde, fetchData } = this.utils;
 		event.preventDefault();
+		this.updateQuery();
 		const url = `https://financialmodelingprep.com/api/v3/search?query=${input.value}&limit=10&exchange=NASDAQ`;
 		toggleHidde(spinner);
 		this.companies = await fetchData(url);
@@ -62,6 +64,13 @@ class CreateForm {
 		callbackFunction(this.companies, input.value);
 		toggleHidde(spinner);
 		//this.storeCompanies();
+	};
+
+	updateQuery = () => {
+		const { input } = this.domElements;
+		let newAdress = document.location.pathname + '?search=' + input.value;
+		window.history.replaceState('', '', '');
+		window.history.replaceState('', '', newAdress);
 	};
 
 	storeCompanies = () => {
@@ -74,8 +83,8 @@ class CreateForm {
 		clearElement(this.domElements.companiesList);
 		return await Promise.all(
 			companies.map(async (company) => {
-				let url1 = `https://financialmodelingprep.com/api/v3/company/profile/${company.symbol}`;
-				company.profile = (await fetchData(url1)).profile;
+				let url = `https://financialmodelingprep.com/api/v3/company/profile/${company.symbol}`;
+				company.profile = (await fetchData(url)).profile;
 				return company;
 			})
 		);
