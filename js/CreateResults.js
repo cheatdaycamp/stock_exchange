@@ -1,21 +1,24 @@
 class CreateResults {
-	constructor(utils, domUL) {
+	constructor(utils, domUL, buttonFunctionality) {
 		this.utils = utils;
 		this.domUL = domUL;
 		this.matchString = '';
+		this.buttonFunctionality = buttonFunctionality;
 	}
 	checkMatch = (stringValue) => {
 		const pattern = new RegExp(this.matchString, `i`);
-		let replacedString = stringValue.toString().replace(pattern, `<span class='highlight'>$&</span>`);
+		let replacedString = stringValue.replace(pattern, `<span class='highlight'>$&</span>`);
 		return replacedString;
 	};
 
 	createLiElement = (company) => {
 		let highlight = {};
+		highlight.name = company.name;
+		highlight.symbol = company.symbol;
 		highlight.name = this.checkMatch(company.name);
 		highlight.symbol = this.checkMatch(company.symbol);
 		let companyItem = this.utils.createElement('li', ['companies-list col-12']);
-		let compareButton = new CompareButton(this.utils.createElement, company).button;
+		let compareButton = new CompareButton(this.utils.createElement, company, this.buttonFunctionality).button;
 		let itemRow = this.utils.createElement('div', ['row d-flex justify-content-between']);
 		itemRow.innerHTML = `<div class= 'row d-flex justify-content-between'>
                     <div class='d-flex'>
