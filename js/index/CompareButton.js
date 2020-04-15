@@ -3,21 +3,21 @@ class CompareButton {
 		this.createElement = createElementFunction;
 		this.company = company;
 		this.button;
-		this.callbackFunction = callbackFunction;
 		this.createButton();
+		this.callbackFunction = callbackFunction;
 	}
 
-	createButton = (callbackFunction) => {
-		let compareButton = this.createElement('button', ['btn btn-primary ml-2']);
+	createButton = () => {
+		let compareButton = this.createElement('button', ['btn btn-primary']);
 		compareButton.innerText = 'Compare';
 		compareButton.addEventListener('click', () => {
-			this.addElement(this.company);
-			this.callbackFunction(this.company);
+			this.addElement();
 		});
 		this.button = compareButton;
 	};
 
-	addElement = (company) => {
-		console.log(company);
+	addElement = () => {
+		console.log(this.company);
+		this.callbackFunction(this.company);
 	};
 }

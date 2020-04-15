@@ -20,9 +20,6 @@ class UtilsClass {
 	toggleHidde = (element) => {
 		element.classList.toggle('d-none');
 	};
-	toggleClass = (element, className) => {
-		element.classList.toggle(className);
-	};
 
 	clearElement = (element) => {
 		while (element.firstChild) {

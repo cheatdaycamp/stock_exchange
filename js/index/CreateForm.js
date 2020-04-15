@@ -11,23 +11,21 @@ class CreateForm {
 
 	createElements = () => {
 		const { createElement } = this.utils;
-		this.domElements.rootDiv = createElement('div', ['root', 'container-fluid']);
-		this.domElements.row01 = createElement('div', ['row justify-content-center p-3 d-flex align-items-center mb-1']);
+		this.domElements.rootDiv = createElement('div', ['border-1 root container-fluid']);
+		this.domElements.row01 = createElement('div', ['row justify-content-center p-3 d-flex align-items-center mb-5']);
 		this.domElements.marquee = createElement('div', ['row marquee shadow']);
 		this.domElements.form = createElement('div', ['input-group mb-3']);
 		this.domElements.logo = createElement('div', ['logo']);
 		this.domElements.input = createElement('input', ['form-control']);
-		this.domElements.innerDiv = createElement('div', ['input-group-append']);
+		this.domElements.innerDiv = createElement('div', ['input-group-append row']);
 		this.domElements.button = createElement('button', ['btn btn-primary']);
 		this.domElements.spinner = createElement('div', ['row justify-content-center d-none']);
-		this.domElements.companiesList = createElement('ul', ['row ulList']);
-		this.domElements.compareDiv = createElement('div', [
-			'd-none border-3 row justify-content-end align-items-center mb-3 px-3',
-		]);
+		this.domElements.companiesList = createElement('div', ['row d-flex flex-grow-1 border-2']);
+		this.domElements.compareDiv = createElement('div', ['row justify-content-around d-flex align-items-center mb-2']);
 	};
 
 	setAttributes = () => {
-		const { input, button, spinner, marquee, compareDiv } = this.domElements;
+		const { input, button, spinner, marquee, compareDiv, companiesList } = this.domElements;
 		button.textContent = 'Search Stock';
 		input.id = 'searchStock';
 		marquee.innerHTML = `<div class='col-12'>
@@ -39,7 +37,8 @@ class CreateForm {
 		spinner.innerHTML = `<div id='spinner' class="spinner-border text-black" role="status">
         <span class="sr-only">Loading...</span>
         </div>`;
-		compareDiv.id = 'compare-div';
+		compareDiv.id = 'compare-wrapper';
+		companiesList.innerHTML = `<ul id='ulList' class='ulList p-0 m-0 d-flex flex-column col'></ul>`;
 	};
 
 	appendElements = () => {
@@ -64,40 +63,20 @@ class CreateForm {
 	};
 
 	setEventsListeners = () => {
-		const { button } = this.domElements;
-		button.addEventListener('click', this.launchSearch(callbackFunction));
+		this.domElements.button.addEventListener('click', this.launchSearch(callbackFunction));
 	};
 
-	launchSearch = async (callbackFunction) => {
+	launchSearch = async (callbackFunction, liFunction) => {
 		const { spinner, input } = this.domElements;
 		const { toggleHidde, fetchData } = this.utils;
 		event.preventDefault();
-		this.updateQuery();
 		const url = `https://financialmodelingprep.com/api/v3/search?query=${input.value}&limit=10&exchange=NASDAQ`;
 		toggleHidde(spinner);
 		this.companies = await fetchData(url);
 		this.companies = await this.createCompaniesList(this.companies);
-		callbackFunction(this.companies, input.value);
+		console.log('1', this.companies);
+		callbackFunction(this.companies, input.value, liFunction);
 		toggleHidde(spinner);
-		//this.storeCompanies();
-	};
-
-	updateQuery = () => {
-		const { input } = this.domElements;
-		let newSearch = this.updateQueryStringParameter(window.location.href, 'search', input.value);
-		if (newSearch !== window.location.href) {
-			window.history.replaceState('', '', newSearch);
-		}
-	};
-
-	updateQueryStringParameter = (uri, key, value) => {
-		var re = new RegExp('([?&])' + key + '=.*?(&|$)', 'i');
-		var separator = uri.indexOf('?') !== -1 ? '&' : '?';
-		if (uri.match(re)) {
-			return uri.replace(re, '$1' + key + '=' + value + '$2');
-		} else {
-			return uri + separator + key + '=' + value;
-		}
 	};
 
 	storeCompanies = () => {
@@ -107,13 +86,25 @@ class CreateForm {
 
 	createCompaniesList = async (companies) => {
 		const { clearElement, fetchData } = this.utils;
-		clearElement(this.domElements.companiesList);
+		let ulList = this.domElements.companiesList.firstChild;
+		console.log(ulList);
+		clearElement(ulList);
 		return await Promise.all(
 			companies.map(async (company) => {
-				let url = `https://financialmodelingprep.com/api/v3/company/profile/${company.symbol}`;
-				company.profile = (await fetchData(url)).profile;
+				let url1 = `https://financialmodelingprep.com/api/v3/company/profile/${company.symbol}`;
+				company.profile = (await fetchData(url1)).profile;
 				return company;
 			})
 		);
+	};
+
+	getColor = (string) => {
+		let number = isNaN(parseFloat(string)) ? this.convToFloat(string) : parseFloat(string);
+		if (number < 0) {
+			return 'redFont';
+		} else if (number > 0) {
+			return 'greenFont';
+		}
+		return 'blackFont';
 	};
 }

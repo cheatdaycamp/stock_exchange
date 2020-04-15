@@ -1,7 +1,7 @@
 class CompanyCard {
 	constructor(utils) {
-		this.root, //dom element where everything is going to be appended.
-			(this.utils = utils); //object with functions
+		this.root; //dom element where everything is going to be appended.
+		this.utils = utils; //object with functions
 		this.companies = []; //all the data from index.html
 		this.symbols = []; //array of symbols from the url
 		this.filteredCompanies = []; // array with the information from the companies
@@ -87,11 +87,9 @@ class CompanyCard {
 		let companyHistorical = await this.getDataChart(company);
 		let dataForChart = this.filterChartData(companyHistorical);
 		let a = document.getElementById(`myChart-${company.symbol}`);
-		console.log(companyHistorical);
-		console.log(dataForChart);
-		console.log(a);
 		this.drawChart(dataForChart, a);
 	};
+
 	appendRootToBody = () => {
 		document.body.prepend(this.root);
 	};
@@ -103,7 +101,6 @@ class CompanyCard {
 	};
 
 	filterChartData = (stockPrices) => {
-		let jump = parseInt(stockPrices.historical.length / 40);
 		let amountData = stockPrices.historical.length - 20;
 		let limitData = stockPrices.historical.length;
 		let slicedData = stockPrices.historical.slice(amountData, limitData);
