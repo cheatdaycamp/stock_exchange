@@ -70,6 +70,7 @@ class CreateForm {
 		const { spinner, input } = this.domElements;
 		const { toggleHidde, fetchData } = this.utils;
 		event.preventDefault();
+		this.updateQuery();
 		const url = `https://financialmodelingprep.com/api/v3/search?query=${input.value}&limit=10&exchange=NASDAQ`;
 		toggleHidde(spinner);
 		this.companies = await fetchData(url);
@@ -82,6 +83,13 @@ class CreateForm {
 	storeCompanies = () => {
 		localStorage.setItem('COMPANIES', JSON.stringify(this.companies));
 		return this.companies;
+	};
+
+	updateQuery = () => {
+		const { input } = this.domElements;
+		let newAdress = document.location.pathname + '?search=' + input.value;
+		window.history.replaceState('', '', '');
+		window.history.replaceState('', '', newAdress);
 	};
 
 	createCompaniesList = async (companies) => {

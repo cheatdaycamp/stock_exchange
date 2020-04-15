@@ -2,70 +2,32 @@ class CompanyCard {
 	constructor(utils, symbol, row) {
 		this.root = row; //dom element where everything is going to be appended.
 		this.utils = utils; //object with functions
-		this.company = {};
+		this.company = {}; //company with all data
 		this.symbol = symbol; //array of symbols from the url
-		this.filteredCompanies = []; // array with the information from the companies
 	}
 
 	launchCardCreation = async () => {
-		this.getCompaniesfromLocalStorage();
-		let caca = await this.filterCompanies();
-		//await this.print(caca);
-		//let cucu = await this.filteredCompanies;
-		//await this.print();
-		//let caca = this.filteredCompanies;
-
-		console.log(this.filteredCompanies);
-		this.appendRootToBody();
+		await this.getCompanyfromLocalStorage();
+		this.company.historical = await this.getDataChart();
+		this.root.append(this.createCard());
 	};
 
-	print = async (caca) => {
-		console.log('ínside print');
-		console.log(caca.length);
-		for (let company of caca) {
-			console.log(typeof company);
-		}
-		console.log('cant print');
-	};
-
-	getCompaniesfromLocalStorage = () => {
-		console.log('grabb');
+	getCompanyfromLocalStorage = async () => {
 		let tryGrabFromStorage = this.utils.getCompaniesfromLocalStorage('COMPANIES');
 		if (tryGrabFromStorage) {
 			let company = tryGrabFromStorage.find((elem) => {
-				elem.symbol === this.symbol;
+				return elem.symbol === this.symbol;
 			});
 			if (company) {
-				this.company = company;
+				return (this.company = company);
 			}
 		}
-		console.log(this.company);
-	};
-
-	filterCompanies = async () => {
-		console.log('filtering');
-		let filteredCompanies = [];
 		let url = `https://financialmodelingprep.com/api/v3/company/profile/${this.symbol}`;
-		let filterCompany;
-
-		if (this.company) {
-			filterCompany = this.companies.find((company) => company.symbol === param);
-		}
-		if (filterCompany && filterCompany.symbol) {
-			filteredCompanies.push(filterCompany);
-			//this.createCard(filterCompany);
-		} else {
-			//console.warn(`Company with symbol: ${param} doesn't exist in COMPANIES local storage. Fetching from API.`);
-			let filterCompany = await this.utils.fetchData(url);
-			filteredCompanies.push(filterCompany);
-			//this.createCard(filterCompany);
-		}
-
-		console.log(filteredCompanies);
-		return filteredCompanies;
+		this.company = await this.utils.fetchData(url);
 	};
 
-	createCard = async (company) => {
+	createCard = () => {
+		const company = this.company;
 		const template = `
                 <div class="card col-12 col-md-8 col-lg-5 p-3 d-flex flex-column">
                     <div class = 'container-fluid d-flex flex-column flex-grow-1 h-100'>
@@ -93,21 +55,14 @@ class CompanyCard {
 		let card = new DOMParser().parseFromString(template, 'text/html');
 		card = card.getElementsByTagName('BODY')[0].firstChild;
 
-		//let dataForChart = this.filterChartData(companyHistorical);
-
-		//let companyHistorical = await this.getDataChart(company);
-		//let a = document.getElementById(`myChart-${company.symbol}`);
-		//this.drawChart(dataForChart, a);
-		//this.root.firstChild.prepend(card);
+		let dataForChart = this.filterChartData(this.company.historical);
+		let a = card.getElementsByTagName('canvas');
+		this.drawChart(dataForChart, a);
+		return card;
 	};
 
-	appendRootToBody = () => {
-		document.body.prepend(this.root);
-	};
-
-	getDataChart = async (company) => {
-		console.log(`getting data chart for ${company.symbol}`);
-		let url = `https://financialmodelingprep.com/api/v3/historical-price-full/${company.symbol}?serietype=line`;
+	getDataChart = async () => {
+		let url = `https://financialmodelingprep.com/api/v3/historical-price-full/${this.company.symbol}?serietype=line`;
 		let stockPrices = await this.utils.fetchData(url);
 		return stockPrices;
 	};
