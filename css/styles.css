@@ -4,12 +4,6 @@
 
 .ulList {
     list-style: none;
-    margin-top: 20px;
-    border: 10px solid black;
-}
-
-.companies-list *:not(span) {
-    margin-left: 4px;
 }
 
 .logo-companies {

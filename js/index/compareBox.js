@@ -26,10 +26,6 @@ class CompareBox {
 		this.parent.append(this.compareButton);
 	};
 
-	toggleCompareButton = (booleanValue) => {
-		this.compareButton.disabled = booleanValue;
-	};
-
 	addEventlisteners = () => {
 		this.compareButton.addEventListener('click', this.launchSearch);
 	};
@@ -43,19 +39,20 @@ class CompareBox {
 				symbols += company.symbol;
 			}
 		});
-		window.location.href = `./compare.html?symbol=${symbols}`;
+		window.location.href = `./company.html?symbol=${symbols}`;
+	};
+
+	toggleCompareButton = (booleanValue) => {
+		this.compareButton.disabled = booleanValue;
 	};
 
 	addCompanies = (newCompany) => {
-		console.log('b');
-		const { clearElement } = this.utils;
 		let doesCompanyExist = this.doesCompanyExist(newCompany);
 		if (this.companies.length < 3 && !doesCompanyExist) {
 			this.companies.push(newCompany);
 			this.refreshCompareCompaniesText();
 			this.toggleCompareButton(false);
-			clearElement(this.container);
-			this.createCompanyButtons();
+			this.createCompanyButton(newCompany);
 		}
 	};
 	refreshCompareCompaniesText = () => {
@@ -70,24 +67,19 @@ class CompareBox {
 		});
 	};
 
-	createCompanyButtons = () => {
-		console.log('hola');
-		const { clearElement } = this.utils;
-		this.companies.forEach((company) => {
-			const button = this.utils.createElement('button', ['btn btn-primary mr-2']);
-			button.innerText = `${company.symbol}`;
-			button.id = `button-cmpn-${company.symbol}`;
-			button.addEventListener('click', () => {
-				let filteredCompanies = this.companies.filter((compareCompany) => compareCompany.symbol !== company.symbol);
-				this.companies = filteredCompanies;
-				if (this.companies.length === 0) {
-					this.toggleCompareButton(true);
-				}
-				document.getElementById(`button-cmpn-${company.symbol}`).remove();
-				this.refreshCompareCompaniesText();
-				//.parentElement.removeChild(document.getElementById(`button-cmpn-${company.symbol}`));
-			});
-			this.container.append(button);
+	createCompanyButton = (company) => {
+		const button = this.utils.createElement('button', ['btn btn-primary mr-2']);
+		button.innerText = `${company.symbol}`;
+		button.id = `button-cmpn-${company.symbol}`;
+		button.addEventListener('click', () => {
+			let filteredCompanies = this.companies.filter((compareCompany) => compareCompany.symbol !== company.symbol);
+			this.companies = filteredCompanies;
+			if (this.companies.length === 0) {
+				this.toggleCompareButton(true);
+			}
+			document.getElementById(`button-cmpn-${company.symbol}`).remove();
+			this.refreshCompareCompaniesText();
 		});
+		this.container.append(button);
 	};
 }

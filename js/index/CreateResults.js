@@ -4,7 +4,8 @@ class CreateResults {
 		this.domUL = domUL.firstChild;
 		this.matchString = '';
 		this.callbackFunction = callbackFunction;
-	}
+    }
+    
 	checkMatch = (company) => {
 		let stringName = company.name;
 		let stringSymbol = company.symbol;

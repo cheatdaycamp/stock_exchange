@@ -74,7 +74,7 @@ class CreateForm {
 		toggleHidde(spinner);
 		this.companies = await fetchData(url);
 		this.companies = await this.createCompaniesList(this.companies);
-		console.log('1', this.companies);
+		this.storeCompanies();
 		callbackFunction(this.companies, input.value, liFunction);
 		toggleHidde(spinner);
 	};
