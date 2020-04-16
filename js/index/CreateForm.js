@@ -9,6 +9,17 @@ class CreateForm {
 		//this.setEventsListeners();
 	}
 
+	grabQuery = (callbackFunction)=>{
+		console.log('here')
+		let search = this.utils.getUrlParams('search')
+		console.log(search)
+		if (search){
+			this.domElements.input.value = search;
+			this.launchSearch(callbackFunction);
+		}
+
+	}
+
 	createElements = () => {
 		const { createElement } = this.utils;
 		this.domElements.rootDiv = createElement('div', ['border-1 root container-fluid h-100']);
@@ -62,17 +73,17 @@ class CreateForm {
 		this.domElements.button.addEventListener('click', this.launchSearch(callbackFunction));
 	};
 
-	launchSearch = async (callbackFunction, liFunction) => {
+	launchSearch = async (callbackFunction ) => {
 		const { spinner, input } = this.domElements;
 		const { toggleHidde, fetchData } = this.utils;
-		event.preventDefault();
+		// event.preventDefault();
 		this.updateQuery();
 		const url = `https://financialmodelingprep.com/api/v3/search?query=${input.value}&limit=10&exchange=NASDAQ`;
 		toggleHidde(spinner);
 		this.companies = await fetchData(url);
 		this.companies = await this.createCompaniesList(this.companies);
 		this.storeCompanies();
-		callbackFunction(this.companies, input.value, liFunction);
+		callbackFunction(this.companies, input.value);
 		toggleHidde(spinner);
 	};
 

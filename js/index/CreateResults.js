@@ -7,7 +7,6 @@ class CreateResults {
   }
 
   checkMatch = (company) => {
-    console.log(company);
     if (company !== null) {
       let stringName='', stringSymbol='', name = '', symbol = '';
       company.name && (stringName = company.name);
@@ -29,7 +28,6 @@ class CreateResults {
 
   createLiElement = (company) => {
 	let highlight = this.checkMatch(company);
-	console.log(highlight)
     let companyItem = this.utils.createElement("li", [
       "d-flex flex-grow-1  p-2 m-0",
     ]);
