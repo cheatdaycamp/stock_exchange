@@ -12,18 +12,19 @@ class CompareBox {
 
 	createContainer = () => {
 		this.container = this.utils.createElement('div', [
-			'min-100 flex-grow-1 d-flex justify-content-start align-items-center border-2',
+			'min-100 flex-grow-1 d-flex justify-content-start align-items-center ',
 		]);
+		this.parent.innerHTML = `<div class = 'card py-3 shadow col-xl-5 col-md-9 col-lg-7 col-sm-11 d-flex flex-row'></div>`
 		this.container.id = 'compare-companies-container';
-		this.parent.append(this.container);
+		this.parent.firstChild.append(this.container);
 	};
 
 	createCompareButton = () => {
-		this.compareButton = this.utils.createElement('button', ['btn btn-primary']);
+		this.compareButton = this.utils.createElement('button', ['btn btn-link']);
 		this.compareButton.id = 'compare-button';
 		this.compareButton.innerText = 'Compare Companies';
 		this.compareButton.disabled = true;
-		this.parent.append(this.compareButton);
+		this.parent.firstChild.append(this.compareButton);
 	};
 
 	addEventlisteners = () => {

@@ -17,35 +17,37 @@ class CreateForm {
 			this.domElements.input.value = search;
 			this.launchSearch(callbackFunction);
 		}
-
 	}
 
 	createElements = () => {
 		const { createElement } = this.utils;
-		this.domElements.rootDiv = createElement('div', ['border-1 root container-fluid h-100']);
-		this.domElements.row01 = createElement('div', ['row justify-content-center p-3 d-flex align-items-center mb-5']);
+		this.domElements.rootDiv = createElement('div', ['root container-fluid h-100']);
+		this.domElements.row01 = createElement('div', ['row justify-content-center d-flex align-items-center mb-5']);
 		this.domElements.marquee = createElement('div', ['row marquee shadow']);
-		this.domElements.form = createElement('div', ['input-group mb-3']);
-		this.domElements.logo = createElement('div', ['logo']);
+		this.domElements.form = createElement('div', ['row justify-content-center d-flex align-items-center mb-3']);
+		this.domElements.logo = createElement('div', ['col d-flex flex-column align-items-center']);
 		this.domElements.input = createElement('input', ['form-control']);
-		this.domElements.innerDiv = createElement('div', ['input-group-append row']);
-		this.domElements.button = createElement('button', ['btn btn-primary']);
+		this.domElements.button = createElement('button', ['btn btn-primary ml-3 text-nowrap']);
 		this.domElements.spinner = createElement('div', ['row justify-content-center d-none']);
-		this.domElements.companiesList = createElement('div', ['row d-flex flex-grow-1 border-2']);
+		this.domElements.companiesList = createElement('div', ['row d-flex flex-grow-1 justify-content-center ']);
 		this.domElements.compareDiv = createElement('div', ['row justify-content-around d-flex align-items-center mb-2']);
 	};
 
 	setAttributes = () => {
-		const { input, button, spinner, marquee, compareDiv, companiesList } = this.domElements;
+		const { input, button, spinner, compareDiv, companiesList, logo, form } = this.domElements;
 		button.textContent = 'Search Stock';
 		input.id = 'searchStock';
-
 		input.setAttribute('type', 'text');
+		form.innerHTML = `
+							<div class= 'card shadow col-xl-5 col-md-9 col-lg-7 col-sm-11 p-3 align-items-center flex-row'>
+								<div class = 'd-flex flex-grow-1'></div>
+							</div>`
 		spinner.innerHTML = `<div id='spinner' class="spinner-border text-black" role="status">
         <span class="sr-only">Loading...</span>
         </div>`;
 		compareDiv.id = 'compare-wrapper';
-		companiesList.innerHTML = `<ul id='ulList' class='ulList p-0 m-0 d-flex flex-column col'></ul>`;
+		companiesList.innerHTML = `<ul id='ulList' class='list-group card col-xl-5 col-md-9 col-lg-7 col-sm-11 shadow p-0 justify-content-center'></ul>`;
+		logo.innerHTML = `<div class='logo my-3'></div>`
 	};
 
 	appendElements = () => {
@@ -53,7 +55,6 @@ class CreateForm {
 			input,
 			button,
 			spinner,
-			innerDiv,
 			row01,
 			form,
 			companiesList,
@@ -63,8 +64,7 @@ class CreateForm {
 			compareDiv,
 		} = this.domElements;
 		row01.append(logo);
-		innerDiv.append(button);
-		form.append(input, innerDiv);
+		form.getElementsByClassName('d-flex flex-grow-1')[0].append(input, button);
 		rootDiv.append(marquee, row01, compareDiv, form, spinner, companiesList);
 		document.body.prepend(rootDiv);
 	};

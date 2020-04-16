@@ -29,7 +29,7 @@ class CreateResults {
   createLiElement = (company) => {
 	let highlight = this.checkMatch(company);
     let companyItem = this.utils.createElement("li", [
-      "d-flex flex-grow-1  p-2 m-0",
+      "list-group-item d-flex flex-grow-1 p-2 ",
     ]);
     let compareButton = new CompareButton(
       this.utils.createElement,
