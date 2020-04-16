@@ -2,11 +2,7 @@ window.onload = (() => {
 	const utils = new UtilsClass();
 	const form = new CreateForm(utils);
 
-	// object desestructuring
-	const { companiesList } = form.domElements;
-	const { companies } = form.companies;
-
-	const marquee = document.getElementById('marquee');
+	const { companiesList, marquee } = form.domElements;
 	new Marquee(utils, marquee);
 
 	const compareDiv = document.getElementById('compare-wrapper');
@@ -18,4 +14,6 @@ window.onload = (() => {
 	form.domElements.button.addEventListener('click', () => {
 		form.launchSearch(callbackFunction);
 	});
+	var htmlElement = document.querySelector("html")
+	htmlElement.classList.remove('d-none')
 })();

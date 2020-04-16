@@ -1,6 +1,9 @@
 * {
     box-sizing: border-box;
 }
+body, html{
+    height: 100%;
+}
 
 .ulList {
     list-style: none;
@@ -45,3 +48,7 @@ body {
         left: -100%
     }
 }
+
+/* .progress-bar{
+    animation: all .2s linear;
+} */

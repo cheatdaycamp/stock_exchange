@@ -11,7 +11,7 @@ class CreateForm {
 
 	createElements = () => {
 		const { createElement } = this.utils;
-		this.domElements.rootDiv = createElement('div', ['border-1 root container-fluid']);
+		this.domElements.rootDiv = createElement('div', ['border-1 root container-fluid h-100']);
 		this.domElements.row01 = createElement('div', ['row justify-content-center p-3 d-flex align-items-center mb-5']);
 		this.domElements.marquee = createElement('div', ['row marquee shadow']);
 		this.domElements.form = createElement('div', ['input-group mb-3']);
@@ -28,11 +28,7 @@ class CreateForm {
 		const { input, button, spinner, marquee, compareDiv, companiesList } = this.domElements;
 		button.textContent = 'Search Stock';
 		input.id = 'searchStock';
-		marquee.innerHTML = `<div class='col-12'>
-						<div class='marquee-wrapper'>
-							<div id='marquee' class='text-nowrap'></div>
-						</div>
-					</div>`;
+
 		input.setAttribute('type', 'text');
 		spinner.innerHTML = `<div id='spinner' class="spinner-border text-black" role="status">
         <span class="sr-only">Loading...</span>
