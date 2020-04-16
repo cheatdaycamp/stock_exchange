@@ -91,7 +91,6 @@ class CreateForm {
 	createCompaniesList = async (companies) => {
 		const { clearElement, fetchData } = this.utils;
 		let ulList = this.domElements.companiesList.firstChild;
-		console.log(ulList);
 		clearElement(ulList);
 		return await Promise.all(
 			companies.map(async (company) => {

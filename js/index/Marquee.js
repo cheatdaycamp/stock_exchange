@@ -8,7 +8,6 @@ class Marquee {
     this.launchMarquee();
   }
   createDivs = () => {
-    console.log(this.parent);
     let content = this.utils.createElement("div", [`col-12`]);
     content.innerHTML = `
 						<div class='col-12'>
