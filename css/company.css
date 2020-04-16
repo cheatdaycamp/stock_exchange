@@ -4,17 +4,19 @@
 }
 
 html {
-    display: block;
-    width: 100%;
-    height: 100%;
+    /* display: block;
+    width: 100%; */
+    border: 6px solid orange;
+    min-height: 100%;
+    height:100%;
 }
 
 body {
-    width: 100%;
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
-    height: 100%;
+    border: 4px solid red;
+    min-height: 100vh;
+    height:100%;
 }
 
 .chart-wrapper {
@@ -31,3 +33,4 @@ body {
 .min-120px {
     min-height: 120px;
 }
+
