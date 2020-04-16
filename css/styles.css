@@ -45,6 +45,6 @@ body {
     }
 }
 
-/* .progress-bar{
-    animation: all .2s linear;
-} */
+li a, li span, li pre{
+    white-space:pre;
+}

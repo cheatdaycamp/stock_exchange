@@ -38,11 +38,11 @@ class CreateResults {
     ).button;
     let spanColor = this.utils.getColor(company.profile.changesPercentage);
     companyItem.innerHTML = `
-                                <div class='d-flex flex-grow-1 p-1'>
+                                <div class='d-flex flex-grow-1 p-1 align-items-center'>
                                     <img class='logo-companies'src=${company.profile.image} alt=${company.name}>
-                                    <a href='./company.html?symbol=${company.symbol}'>${highlight.name}</a>
-                                    <span>(${highlight.symbol})</span>
-                                    <span class=${spanColor}>${company.profile.changesPercentage}</span>
+                                    <a href='./company.html?symbol=${company.symbol}'>   ${highlight.name} </a>
+                                    <span>(${highlight.symbol}) </span>
+                                    <span class=${spanColor}>${company.profile.changesPercentage} </span>
                                 </div>
 		                        `;
     companyItem.append(compareButton);

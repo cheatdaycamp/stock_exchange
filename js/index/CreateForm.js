@@ -29,7 +29,7 @@ class CreateForm {
 		this.domElements.input = createElement('input', ['form-control']);
 		this.domElements.button = createElement('button', ['btn btn-primary ml-3 text-nowrap']);
 		this.domElements.spinner = createElement('div', ['row justify-content-center d-none']);
-		this.domElements.companiesList = createElement('div', ['row d-flex flex-grow-1 justify-content-center ']);
+		this.domElements.companiesList = createElement('div', ['row d-flex flex-grow-1 justify-content-center']);
 		this.domElements.compareDiv = createElement('div', ['row justify-content-around d-flex align-items-center mb-2']);
 	};
 
@@ -39,14 +39,14 @@ class CreateForm {
 		input.id = 'searchStock';
 		input.setAttribute('type', 'text');
 		form.innerHTML = `
-							<div class= 'card shadow col-xl-5 col-md-9 col-lg-7 col-sm-11 p-3 align-items-center flex-row'>
+							<div class= 'card shadow col-xl-7 col-md-9 col-lg-7 col-sm-11 p-3 align-items-center flex-row'>
 								<div class = 'd-flex flex-grow-1'></div>
 							</div>`
 		spinner.innerHTML = `<div id='spinner' class="spinner-border text-black" role="status">
         <span class="sr-only">Loading...</span>
         </div>`;
 		compareDiv.id = 'compare-wrapper';
-		companiesList.innerHTML = `<ul id='ulList' class='list-group card col-xl-5 col-md-9 col-lg-7 col-sm-11 shadow p-0 justify-content-center'></ul>`;
+		companiesList.innerHTML = `<ul id='ulList' class='list-group card col-xl-7 col-md-9 col-lg-7 col-sm-11 shadow p-0 justify-content-center d-none'></ul>`;
 		logo.innerHTML = `<div class='logo my-3'></div>`
 	};
 
@@ -74,9 +74,11 @@ class CreateForm {
 	};
 
 	launchSearch = async (callbackFunction ) => {
-		const { spinner, input } = this.domElements;
+		const { spinner, input, companiesList } = this.domElements;
 		const { toggleHidde, fetchData } = this.utils;
-		// event.preventDefault();
+		if (!companiesList.firstChild.classList.contains('d-none')){
+			toggleHidde(companiesList.firstChild)
+		}
 		this.updateQuery();
 		const url = `https://financialmodelingprep.com/api/v3/search?query=${input.value}&limit=10&exchange=NASDAQ`;
 		toggleHidde(spinner);
@@ -85,6 +87,7 @@ class CreateForm {
 		this.storeCompanies();
 		callbackFunction(this.companies, input.value);
 		toggleHidde(spinner);
+		toggleHidde(companiesList.firstChild)
 	};
 
 	storeCompanies = () => {

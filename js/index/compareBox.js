@@ -14,7 +14,7 @@ class CompareBox {
 		this.container = this.utils.createElement('div', [
 			'min-100 flex-grow-1 d-flex justify-content-start align-items-center ',
 		]);
-		this.parent.innerHTML = `<div class = 'card py-3 shadow col-xl-5 col-md-9 col-lg-7 col-sm-11 d-flex flex-row'></div>`
+		this.parent.innerHTML = `<div class = 'card py-3 shadow col-xl-7 col-md-9 col-lg-7 col-sm-11 d-flex flex-row'></div>`
 		this.container.id = 'compare-companies-container';
 		this.parent.firstChild.append(this.container);
 	};
