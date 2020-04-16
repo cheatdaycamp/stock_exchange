@@ -9,7 +9,7 @@ class CompanyCard {
 	launchCardCreation = async () => {
 		await this.getCompanyfromLocalStorage();
 		this.company.historical = await this.getDataChart();
-		this.root.getElementsByClassName('row d-flex align-items-stretch')[0].append(this.createCard());
+		this.root.append(this.createCard());
 	};
 
 	getCompanyfromLocalStorage = async () => {
@@ -29,7 +29,7 @@ class CompanyCard {
 	createCard = () => {
 		const company = this.company;
 		const template = `
-                <div class="m-3 card col-xs-11 col-sm-11 col-md-11 col-lg-5 col-xl-3 p-3 d-flex flex-column align-items-stretch">
+                <div class="m-3 card col-xs-11 col-sm-11 col-md-11 col-lg-5 col-xl-4 p-3 d-flex flex-column align-items-stretch">
                     <div class = 'container-fluid d-flex flex-column flex-grow-1 h-100'>
                         <div class = 'min-120px row d-flex flex-grow-1 justify-content-start align-items-center'>
                             <img src="${company.profile.image}" class="company-logo card-img-top" alt="${
