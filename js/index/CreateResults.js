@@ -1,5 +1,6 @@
 class CreateResults {
-  constructor(utils, domUL, callbackFunction) {
+  constructor(utils, domUL, callbackFunction, API) {
+    this.API = API;
     this.utils = utils;
     this.domUL = domUL.firstChild;
     this.matchString = "";
@@ -8,7 +9,10 @@ class CreateResults {
 
   checkMatch = (company) => {
     if (company !== null) {
-      let stringName='', stringSymbol='', name = '', symbol = '';
+      let stringName = "",
+        stringSymbol = "",
+        name = "",
+        symbol = "";
       company.name && (stringName = company.name);
       company.symbol && (stringSymbol = company.symbol);
 
@@ -27,7 +31,7 @@ class CreateResults {
   };
 
   createLiElement = (company) => {
-	let highlight = this.checkMatch(company);
+    let highlight = this.checkMatch(company);
     let companyItem = this.utils.createElement("li", [
       "list-group-item d-flex flex-grow-1 p-2 ",
     ]);

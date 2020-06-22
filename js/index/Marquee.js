@@ -1,9 +1,10 @@
 class Marquee {
-  constructor(utils, parent) {
+  constructor(utils, parent, API) {
     this.utils = utils;
     this.parent = parent;
     this.progressValue = 0;
-    this.prices; // storing the fetch
+    this.prices;
+    this.API = API;
     this.createDivs();
     this.launchMarquee();
   }
@@ -22,19 +23,19 @@ class Marquee {
   };
 
   launchMarquee = async () => {
-    const url = `https://financialmodelingprep.com/api/v3/stock/real-time-price`;
+    const url = `https://financialmodelingprep.com/api/v3/stock/real-time-price?apikey=${this.API}`;
     this.prices = await this.utils.fetchData(url);
     this.createMarquee();
   };
   createMarquee = async () => {
-	let wrapper = this.content.getElementsByClassName('text-nowrap')[0]
+    let wrapper = this.content.getElementsByClassName("text-nowrap")[0];
 
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < 300; i++) {
       const company = this.prices.stockList[i];
       const stockItem = `<span>| ${company.symbol} </span><span class="text-success">${company.price} </span>`;
       wrapper.insertAdjacentHTML(`beforeend`, stockItem);
-	}
-	let loader = this.content.getElementsByClassName(`loader`)[0]
+    }
+    let loader = this.content.getElementsByClassName(`loader`)[0];
     loader.classList.add("d-none");
   };
 }

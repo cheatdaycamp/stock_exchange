@@ -1,6 +1,7 @@
 window.onload = (() => {
+  const API = `ed93f3e229380c530b7a0e7663f86b99`;
   const utils = new UtilsClass();
-  const form = new CreateForm(utils);
+  const form = new CreateForm(utils, API);
   const {
     companiesList,
     marquee,
@@ -9,12 +10,13 @@ window.onload = (() => {
     input,
   } = form.domElements;
 
-  new Marquee(utils, marquee);
-  const compareBox = new CompareBox(utils, compareDiv);
+  new Marquee(utils, marquee, API);
+  const compareBox = new CompareBox(utils, compareDiv, API);
   const resultsList = new CreateResults(
     utils,
     companiesList,
-    compareBox.addCompanies.bind(compareBox)
+    compareBox.addCompanies.bind(compareBox),
+    API
   );
 
   form.grabQuery(resultsList.createCompaniesList.bind(resultsList));

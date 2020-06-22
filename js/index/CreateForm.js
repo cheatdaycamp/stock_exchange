@@ -1,16 +1,15 @@
 class CreateForm {
-  constructor(utils) {
+  constructor(utils, API) {
+    this.API = API;
     this.utils = utils;
     this.domElements = {}; // store the dom elements
     this.companies = []; // store fetched data mapped
     this.createElements();
     this.setAttributes();
     this.appendElements();
-    this.setEventsListeners();
   }
 
   grabQuery = (callbackFunction) => {
-    console.log("here");
     let search = this.utils.getUrlParams("search");
     console.log(search);
     if (search) {
@@ -63,12 +62,14 @@ class CreateForm {
     input.id = "searchStock";
     input.setAttribute("type", "text");
     form.innerHTML = `
-							<div class= 'card shadow col-xl-7 col-md-9 col-lg-7 col-sm-11 p-3 align-items-center flex-row'>
-								<div class = 'd-flex flex-grow-1'></div>
-							</div>`;
-    spinner.innerHTML = `<div id='spinner' class="spinner-border text-black" role="status">
-        <span class="sr-only">Loading...</span>
-        </div>`;
+                    <div class= 'card shadow col-xl-7 col-md-9 col-lg-7 col-sm-11 p-3 align-items-center flex-row'>
+                      <div class = 'd-flex flex-grow-1'></div>
+                    </div>
+                     `;
+    spinner.innerHTML = `
+                      <div id='spinner' class="spinner-border text-black" role="status">
+                       <span class="sr-only">Loading...</span>
+                      </div>`;
     compareDiv.id = "compare-wrapper";
     companiesList.innerHTML = `<ul id='ulList' class='list-group card col-xl-7 col-md-9 col-lg-7 col-sm-11 shadow p-0 justify-content-center d-none'></ul>`;
     logo.innerHTML = `<div class='logo my-3'></div>`;
@@ -93,22 +94,13 @@ class CreateForm {
     document.body.prepend(rootDiv);
   };
 
-  setEventsListeners = () => {
-    // this.domElements.button.addEventListener(
-    //   "click",
-    //   this.launchSearch(callbackFunction)
-    // );
-  };
-
   launchSearch = async (callbackFunction) => {
-    console.log("gere");
     const { spinner, input, companiesList } = this.domElements;
     const { toggleHidde, fetchData } = this.utils;
-    if (!companiesList.firstChild.classList.contains("d-none")) {
+    if (!companiesList.firstChild.classList.contains("d-none"))
       toggleHidde(companiesList.firstChild);
-    }
     this.updateQuery();
-    const url = `https://financialmodelingprep.com/api/v3/search?query=${input.value}&limit=10&exchange=NASDAQ`;
+    const url = `https://financialmodelingprep.com/api/v3/search?query=${input.value}&limit=10&exchange=NASDAQ&apikey=${this.API}`;
     toggleHidde(spinner);
     this.companies = await fetchData(url);
     this.companies = await this.createCompaniesList(this.companies);
@@ -136,14 +128,19 @@ class CreateForm {
     clearElement(ulList);
     return await Promise.all(
       companies.map(async (company) => {
-        let url1 = `https://financialmodelingprep.com/api/v3/company/profile/${company.symbol}`;
-        company.profile = (await fetchData(url1)).profile;
+        let url1 = `https://financialmodelingprep.com/api/v3/company/profile/${company.symbol}?apikey=${this.API}`;
+        try {
+          company.profile = (await fetchData(url1)).profile;
+          console.log(company.profile);
+        } catch {
+          company.profile = {};
+        }
         return company;
       })
     );
   };
 
-  debounce(f, t){
+  debounce(f, t) {
     return function (args) {
       let previousCall = this.lastCall;
       this.lastCall = Date.now();
@@ -151,17 +148,14 @@ class CreateForm {
         f(args);
       }
     };
-  };
+  }
 
   getColor = (string) => {
     let number = isNaN(parseFloat(string))
       ? this.convToFloat(string)
       : parseFloat(string);
-    if (number < 0) {
-      return "redFont";
-    } else if (number > 0) {
-      return "greenFont";
-    }
+    if (number < 0) return "redFont";
+    else if (number > 0) return "greenFont";
     return "blackFont";
   };
 }
