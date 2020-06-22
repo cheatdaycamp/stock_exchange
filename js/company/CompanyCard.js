@@ -26,7 +26,6 @@ class CompanyCard {
       });
       if (company) return (this.company = company);
     }
-
     this.company = await this.utils.fetchData(url);
   };
 
@@ -38,9 +37,7 @@ class CompanyCard {
                         <div class = 'min-120px row d-flex flex-grow-1 justify-content-start align-items-center'>
                             <img src="${
                               company.profile.image
-                            }" class="company-logo card-img-top" alt="${
-      company.symbol
-    }">
+                            }" class="company-logo card-img-top" alt="${company.symbol}">
                             <div class="d-flex flex-column ml-2">
                                 <h2>${company.profile.companyName}</h2>
                                 <h3>${company.symbol}</h3>
