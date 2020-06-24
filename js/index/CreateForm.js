@@ -11,7 +11,6 @@ class CreateForm {
 
   grabQuery = (callbackFunction) => {
     let search = this.utils.getUrlParams("search");
-    console.log(search);
     if (search) {
       this.domElements.input.value = search;
       this.launchSearch(callbackFunction);

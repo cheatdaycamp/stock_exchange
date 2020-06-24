@@ -8,18 +8,21 @@ class Marquee {
     this.createDivs();
     this.launchMarquee();
   }
+  
   createDivs = () => {
-    let content = this.utils.createElement("div", [`col-12`]);
-    content.innerHTML = `
-						<div class='col-12'>
-							<div class='loader'>Loading Marquee...</div>
-							<div class='marquee-wrapper'>
-								<div id='marquee' class='text-nowrap'></div>
-							</div>
-						</div>
-						`;
-    this.content = content;
-    this.parent.append(this.content);
+    const { parent } = this;
+    let string = `
+                  <div class='col-12'>
+                    <div class='loader'>Loading Marquee...</div>
+                    <div class='marquee-wrapper'>
+                      <div id='marquee' class='text-nowrap'></div>
+                    </div>
+                  </div>
+                `;
+    this.content = new DOMParser()
+      .parseFromString(string, "text/html")
+      .getElementsByTagName("body")[0];
+    parent.append(this.content);
   };
 
   launchMarquee = async () => {
@@ -27,9 +30,9 @@ class Marquee {
     this.prices = await this.utils.fetchData(url);
     this.createMarquee();
   };
+
   createMarquee = async () => {
     let wrapper = this.content.getElementsByClassName("text-nowrap")[0];
-
     for (let i = 0; i < 300; i++) {
       const company = this.prices.stockList[i];
       const stockItem = `<span>| ${company.symbol} </span><span class="text-success">${company.price} </span>`;

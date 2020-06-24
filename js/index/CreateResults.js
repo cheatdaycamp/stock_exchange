@@ -17,15 +17,13 @@ class CreateResults {
       company.symbol && (stringSymbol = company.symbol);
 
       const pattern = new RegExp(this.matchString, `i`);
-      if (stringName) {
+      if (stringName)
         name = stringName.replace(pattern, `<span class='highlight'>$&</span>`);
-      }
-      if (stringSymbol) {
+      if (stringSymbol)
         symbol = stringSymbol.replace(
           pattern,
           `<span class='highlight'>$&</span>`
         );
-      }
       return { name: name, symbol: symbol };
     }
   };
