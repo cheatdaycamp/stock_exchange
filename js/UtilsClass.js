@@ -3,18 +3,13 @@ class UtilsClass {
     let number = isNaN(parseFloat(string))
       ? this.convToFloat(string)
       : parseFloat(string);
-    if (number < 0) {
-      return "redFont";
-    } else if (number > 0) {
-      return "greenFont";
-    }
+    if (number < 0) return "redFont";
+    else if (number > 0) return "greenFont";
     return "blackFont";
   };
 
   convToFloat = (string) => {
-    if (string) {
-      return parseFloat(string.substr(1));
-    } //slices first character
+    if (string) return parseFloat(string.substr(1)); //slices first character
     return 0;
   };
 
@@ -51,5 +46,5 @@ class UtilsClass {
       ? (element.classList = classes)
       : element.classList.add(...classes);
     return element;
-  };
+  };  
 }
